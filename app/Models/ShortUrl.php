@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ShortUrl extends Model
 {
     use HasFactory;
+    
+    protected $table = 'ShortUrl';
 
     protected $fillable = ['long_url', 'short_code'];
 
