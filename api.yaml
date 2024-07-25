@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Short URL Service API
+  version: 1.0.0
+  description: A URL shortening service built with Laravel.
+servers:
+  - url: http://localhost:8200
+    description: Local development server
+paths:
+  /api/shorturl:
+    post:
+      summary: Create a short URL
+      description: Generates a short URL for the given long URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                long_url:
+                  type: string
+                  description: The long URL to be shortened.
+                  example: https://www.google.com/maps/@25.0204838,121.5496192,15z?entry=ttu
+                  maxLength: 4000
+      responses:
+        '200':
+          description: Successfully created short URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  short_url:
+                    type: string
+                    example: http://localhost/short/abcdef
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: 未預期錯誤
+  /api/short/{code}:
+    get:
+      summary: Get the long URL
+      description: Retrieves the long URL corresponding to the given short URL code.
+      parameters:
+        - name: code
+          in: path
+          required: true
+          description: The code representing the short URL.
+          schema:
+            type: string
+            example: abcdef
+      responses:
+        '200':
+          description: Successfully retrieved the long URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  long_url:
+                    type: string
+                    example: https://www.google.com/maps/@25.0204838,121.5496192,15z?entry=ttu
+                  count:
+                    type: integer
+                    example: 1
+        '403':
+          description: Access forbidden - URL opened more than 10 times
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: 開啟超過10次
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: 未預期錯誤
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
