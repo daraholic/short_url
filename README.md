@@ -27,6 +27,14 @@ docker compose up -d --build
 ```
 cp .env.example .env
 ```
+- 進到 container
+```
+docker exec -ti short sh
+``` 
+- 在 container 內執行 migrate
+```
+php artisan migrate
+``` 
 - 使用以下指令添加 .env 文件中的 APP_KEY：
 ```
 php artisan key:generate
