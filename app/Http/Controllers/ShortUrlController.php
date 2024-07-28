@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreShortUrlRequest;
+
 use App\Models\ShortUrl;
-use App\Models\UrlHit;
 use App\Models\UrlLog;
 use Illuminate\Support\Str;
 
 class ShortUrlController extends Controller
 {
-    public function create(Request $request)
+    public function create(StoreShortUrlRequest $request)
     {
-        $request->validate(['long_url' => 'required|url|max:4000']);
-        
         $shortCode = Str::random(6);
         ShortUrl::create([
             'long_url' => $request->long_url,

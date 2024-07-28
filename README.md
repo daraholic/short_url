@@ -23,22 +23,31 @@ cd short_url
 docker compose up -d --build
 ```
 - 設置環境變量
-將 .env.example 文件複製為 .env，並修改必要的環境變量。
+將 .env.example 文件複製為 .env。
 ```
 cp .env.example .env
+```
+- 加資料庫檔案
+```
+touch database/database.sqlite
+```
+- 設定資料庫路徑
+.env 中的 DB_DATABASE=laravel 改為以下路徑
+```
+DB_DATABASE=/www/database/database.sqlite
 ```
 - 進到 container
 ```
 docker exec -ti short sh
 ``` 
-- 在 container 內執行 migrate
-```
-php artisan migrate
-``` 
 - 使用以下指令添加 .env 文件中的 APP_KEY：
 ```
 php artisan key:generate
 ``` 
+- 在 container 內執行 migrate
+```
+php artisan migrate
+```
 - 在本機開啟網頁輸入以下資訊會看到 Laravel 歡迎頁
 ```
 localhost:8200
